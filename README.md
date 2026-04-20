@@ -7,9 +7,10 @@ An interactive simulation for job seekers to test how skill-building choices aff
 ### Concept
 
 The simulator models a learner deciding between:
-- TVET courses
+- TVET pathways
+- non-TVET pathways
+- engineering degree pathways
 - internships
-- certifications
 
 It then projects labour market outcomes over time using demand and oversupply logic.
 
@@ -17,7 +18,7 @@ It then projects labour market outcomes over time using demand and oversupply lo
 
 1. Select a TVET program.
 2. Select an internship.
-3. Select a certification.
+3. Select an engineering degree path.
 4. Pick a labour market scenario.
 5. Move the year slider to simulate labour market changes over time.
 6. Run simulation.
@@ -34,7 +35,7 @@ The model uses demand-aware scoring:
 - High-demand skills increase hiring probability and salary.
 - Oversupplied skills increase competition and can reduce hiring probability.
 - Market scenarios (green transition, automation wave, slowdown) shift demand by year.
-- Internship and certification choices add experience/signal effects.
+- Internship and degree choices add experience/signal effects.
 
 ## Project Files
 

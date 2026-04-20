@@ -7,7 +7,7 @@ const marketSkills = {
   basicAdmin: { title: "Basic Administration", demand: 48, oversupply: 77, salaryBoost: 210 }
 };
 
-const courses = [
+const programs = [
   {
     id: "tvet-data",
     name: "TVET Diploma in Data Operations",
@@ -16,9 +16,21 @@ const courses = [
   },
   {
     id: "tvet-green",
-    name: "TVET Certificate in Green Technology",
+    name: "TVET Diploma in Green Technology",
     duration: 10,
     skills: ["renewableEnergy", "advancedManufacturing"]
+  },
+  {
+    id: "non-tvet-business",
+    name: "Non-TVET Diploma in Business Administration",
+    duration: 10,
+    skills: ["digitalMarketing", "basicAdmin"]
+  },
+  {
+    id: "non-tvet-it",
+    name: "Non-TVET Diploma in Information Systems",
+    duration: 11,
+    skills: ["dataAnalytics", "cloudSupport"]
   },
   {
     id: "tvet-industry",
@@ -27,25 +39,37 @@ const courses = [
     skills: ["advancedManufacturing", "cloudSupport"]
   },
   {
-    id: "tvet-business",
-    name: "TVET Digital Business Essentials",
-    duration: 8,
-    skills: ["digitalMarketing", "basicAdmin"]
+    id: "degree-civil",
+    name: "Degree in Civil Engineering",
+    duration: 16,
+    skills: ["advancedManufacturing", "renewableEnergy"]
+  },
+  {
+    id: "degree-electrical",
+    name: "Degree in Electrical Engineering",
+    duration: 16,
+    skills: ["renewableEnergy", "cloudSupport"]
+  },
+  {
+    id: "degree-mechanical",
+    name: "Degree in Mechanical Engineering",
+    duration: 16,
+    skills: ["advancedManufacturing", "cloudSupport"]
   }
 ];
 
 const internships = [
-  { id: "intern-sme", name: "SME Operations Internship", experienceBoost: 9, demandBias: "advancedManufacturing", duration: 4 },
-  { id: "intern-data", name: "Data Team Internship", experienceBoost: 14, demandBias: "dataAnalytics", duration: 5 },
-  { id: "intern-energy", name: "Renewable Site Internship", experienceBoost: 13, demandBias: "renewableEnergy", duration: 5 },
-  { id: "intern-marketing", name: "Agency Internship", experienceBoost: 8, demandBias: "digitalMarketing", duration: 4 }
+  { id: "intern-petronas", name: "PETRONAS Operations Internship", experienceBoost: 14, demandBias: "advancedManufacturing", duration: 5 },
+  { id: "intern-tnb", name: "TNB Grid and Energy Internship", experienceBoost: 15, demandBias: "renewableEnergy", duration: 5 },
+  { id: "intern-mimos", name: "MIMOS Digital Systems Internship", experienceBoost: 13, demandBias: "dataAnalytics", duration: 5 },
+  { id: "intern-sime", name: "Sime Darby Engineering Internship", experienceBoost: 12, demandBias: "cloudSupport", duration: 5 },
+  { id: "intern-cimb", name: "CIMB Operations Internship", experienceBoost: 10, demandBias: "digitalMarketing", duration: 4 }
 ];
 
-const certifications = [
-  { id: "cert-cloud", name: "Cloud Support Associate", signalBoost: 12, skill: "cloudSupport" },
-  { id: "cert-analyst", name: "Junior Data Analyst", signalBoost: 15, skill: "dataAnalytics" },
-  { id: "cert-solar", name: "Solar Installation Professional", signalBoost: 15, skill: "renewableEnergy" },
-  { id: "cert-admin", name: "Office Administration Specialist", signalBoost: 8, skill: "basicAdmin" }
+const degreeOptions = [
+  { id: "degree-civil", name: "Degree in Civil Engineering", signalBoost: 15, skills: ["advancedManufacturing", "renewableEnergy"] },
+  { id: "degree-electrical", name: "Degree in Electrical Engineering", signalBoost: 16, skills: ["renewableEnergy", "cloudSupport"] },
+  { id: "degree-mechanical", name: "Degree in Mechanical Engineering", signalBoost: 16, skills: ["advancedManufacturing", "cloudSupport"] }
 ];
 
 const yearRange = document.getElementById("yearRange");
@@ -57,9 +81,9 @@ const stepCounter = document.getElementById("stepCounter");
 const stepTitle = document.getElementById("stepTitle");
 const questionSteps = Array.from(document.querySelectorAll(".question-step"));
 
-const courseSelect = document.getElementById("courseSelect");
+const programSelect = document.getElementById("programSelect");
 const internshipSelect = document.getElementById("internshipSelect");
-const certSelect = document.getElementById("certSelect");
+const degreeSelect = document.getElementById("degreeSelect");
 const scenarioSelect = document.getElementById("scenarioSelect");
 
 const hireProbabilityEl = document.getElementById("hireProbability");
@@ -79,9 +103,9 @@ function populateSelect(select, items) {
   });
 }
 
-populateSelect(courseSelect, courses);
+populateSelect(programSelect, programs);
 populateSelect(internshipSelect, internships);
-populateSelect(certSelect, certifications);
+populateSelect(degreeSelect, degreeOptions);
 
 yearRange.addEventListener("input", () => {
   yearLabel.textContent = yearRange.value;
@@ -134,14 +158,14 @@ function demandShiftForYear(skillKey, year, scenario) {
 }
 
 function simulate() {
-  const selectedCourse = courses.find((x) => x.id === courseSelect.value);
+  const selectedProgram = programs.find((x) => x.id === programSelect.value);
   const selectedInternship = internships.find((x) => x.id === internshipSelect.value);
-  const selectedCert = certifications.find((x) => x.id === certSelect.value);
+  const selectedDegree = degreeOptions.find((x) => x.id === degreeSelect.value);
 
   const year = Number(yearRange.value);
   const scenario = scenarioSelect.value;
 
-  const chosenSkills = new Set([...selectedCourse.skills, selectedInternship.demandBias, selectedCert.skill]);
+  const chosenSkills = new Set([...selectedProgram.skills, selectedInternship.demandBias, ...selectedDegree.skills]);
 
   let demandScore = 0;
   let oversupplyPenalty = 0;
@@ -159,13 +183,13 @@ function simulate() {
   const oversupplyAverage = oversupplyPenalty / chosenSkills.size;
 
   const internshipAdvantage = selectedInternship.experienceBoost;
-  const certAdvantage = selectedCert.signalBoost;
+  const degreeAdvantage = selectedDegree.signalBoost;
 
   const employabilityRaw =
     (demandAverage - oversupplyAverage) / 22 +
     internshipAdvantage / 18 +
-    certAdvantage / 20 -
-    selectedCourse.duration / 28;
+    degreeAdvantage / 22 -
+    selectedProgram.duration / 28;
 
   const hireProbability = logisticScore(employabilityRaw) * 100;
 
@@ -174,17 +198,17 @@ function simulate() {
     scenario === "global-slowdown" ? 0.94 : scenario === "green-shift" ? 1.06 : scenario === "automation-wave" ? 1.04 : 1;
 
   const estimatedSalary =
-    (baseSalary + salaryPremium / chosenSkills.size + selectedInternship.experienceBoost * 30 + selectedCert.signalBoost * 20) *
+    (baseSalary + salaryPremium / chosenSkills.size + selectedInternship.experienceBoost * 30 + selectedDegree.signalBoost * 22) *
     scenarioMultiplier;
 
   const timeToEmployment = Math.max(
     1,
     Math.round(
       12 +
-        selectedCourse.duration * 0.28 +
+        selectedProgram.duration * 0.28 +
         (oversupplyAverage - demandAverage) / 24 -
         selectedInternship.experienceBoost / 3.4 -
-        selectedCert.signalBoost / 6
+        selectedDegree.signalBoost / 6
     )
   );
 
@@ -198,7 +222,7 @@ function simulate() {
   insightTextEl.textContent =
     `Your profile is weighted toward ${demandSignal} skills with ${oversupplySignal}. ` +
     `Labour demand in ${year} (${scenario.replace("-", " ")}) is directly raising or lowering your hire odds. ` +
-    `Internship exposure and certification signaling improve employability, while longer training delays entry.`;
+    `Internship exposure and degree signalling improve employability, while longer training delays entry.`;
 
   resultsPanel.classList.remove("hidden");
 }
