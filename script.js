@@ -51,6 +51,11 @@ const certifications = [
 const yearRange = document.getElementById("yearRange");
 const yearLabel = document.getElementById("yearLabel");
 const simulateBtn = document.getElementById("simulateBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const stepCounter = document.getElementById("stepCounter");
+const stepTitle = document.getElementById("stepTitle");
+const questionSteps = Array.from(document.querySelectorAll(".question-step"));
 
 const courseSelect = document.getElementById("courseSelect");
 const internshipSelect = document.getElementById("internshipSelect");
@@ -61,6 +66,9 @@ const hireProbabilityEl = document.getElementById("hireProbability");
 const salaryLevelEl = document.getElementById("salaryLevel");
 const employmentTimeEl = document.getElementById("employmentTime");
 const insightTextEl = document.getElementById("insightText");
+const resultsPanel = document.getElementById("resultsPanel");
+
+let activeStep = 0;
 
 function populateSelect(select, items) {
   items.forEach((item) => {
@@ -77,6 +85,33 @@ populateSelect(certSelect, certifications);
 
 yearRange.addEventListener("input", () => {
   yearLabel.textContent = yearRange.value;
+});
+
+function updateStepUI() {
+  questionSteps.forEach((step, idx) => {
+    step.classList.toggle("active", idx === activeStep);
+  });
+
+  stepCounter.textContent = `Question ${activeStep + 1} of ${questionSteps.length}`;
+  stepTitle.textContent = questionSteps[activeStep].dataset.stepTitle;
+
+  prevBtn.disabled = activeStep === 0;
+  nextBtn.classList.toggle("hidden", activeStep === questionSteps.length - 1);
+  simulateBtn.classList.toggle("hidden", activeStep !== questionSteps.length - 1);
+}
+
+prevBtn.addEventListener("click", () => {
+  if (activeStep > 0) {
+    activeStep -= 1;
+    updateStepUI();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if (activeStep < questionSteps.length - 1) {
+    activeStep += 1;
+    updateStepUI();
+  }
 });
 
 function logisticScore(x) {
@@ -164,7 +199,9 @@ function simulate() {
     `Your profile is weighted toward ${demandSignal} skills with ${oversupplySignal}. ` +
     `Labour demand in ${year} (${scenario.replace("-", " ")}) is directly raising or lowering your hire odds. ` +
     `Internship exposure and certification signaling improve employability, while longer training delays entry.`;
+
+  resultsPanel.classList.remove("hidden");
 }
 
 simulateBtn.addEventListener("click", simulate);
-simulate();
+updateStepUI();

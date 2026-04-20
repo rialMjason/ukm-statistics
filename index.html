@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <section class="panel intro">
+    <main class="stage">
+      <section class="wizard-card">
         <p class="eyebrow">UKM Labour Market Game</p>
         <h1>Skill Gap -> Employment Simulator</h1>
         <p>
@@ -22,69 +22,84 @@
           Then simulate how changing labour demand affects your hiring probability,
           salary, and time to employment.
         </p>
-      </section>
+        <section class="wizard">
+          <p id="stepCounter" class="step-counter">Question 1 of 5</p>
+          <h2 id="stepTitle">Choose your TVET program</h2>
 
-      <section class="panel controls">
-        <h2>1) Choose Your Path</h2>
-        <div class="control-grid">
-          <label>
-            TVET program
-            <select id="courseSelect"></select>
-          </label>
+          <div class="question-viewport">
+            <div class="question-step" data-step-title="Choose your TVET program">
+              <label>
+                TVET program
+                <select id="courseSelect"></select>
+              </label>
+            </div>
 
-          <label>
-            Internship
-            <select id="internshipSelect"></select>
-          </label>
+            <div class="question-step" data-step-title="Choose your internship">
+              <label>
+                Internship
+                <select id="internshipSelect"></select>
+              </label>
+            </div>
 
-          <label>
-            Certification
-            <select id="certSelect"></select>
-          </label>
+            <div class="question-step" data-step-title="Choose your certification">
+              <label>
+                Certification
+                <select id="certSelect"></select>
+              </label>
+            </div>
 
-          <label>
-            Labour market scenario
-            <select id="scenarioSelect">
-              <option value="baseline">Baseline growth</option>
-              <option value="green-shift">Green transition boom</option>
-              <option value="automation-wave">Automation wave</option>
-              <option value="global-slowdown">Global slowdown</option>
-            </select>
-          </label>
+            <div class="question-step" data-step-title="Pick labour market scenario">
+              <label>
+                Labour market scenario
+                <select id="scenarioSelect">
+                  <option value="baseline">Baseline growth</option>
+                  <option value="green-shift">Green transition boom</option>
+                  <option value="automation-wave">Automation wave</option>
+                  <option value="global-slowdown">Global slowdown</option>
+                </select>
+              </label>
+            </div>
 
-          <label>
-            Simulation year: <span id="yearLabel">2026</span>
-            <input id="yearRange" type="range" min="2026" max="2032" value="2026" />
-          </label>
-        </div>
+            <div class="question-step" data-step-title="Choose simulation year">
+              <label>
+                Simulation year: <span id="yearLabel">2026</span>
+                <input id="yearRange" type="range" min="2026" max="2032" value="2026" />
+              </label>
+            </div>
+          </div>
 
-        <button id="simulateBtn" type="button">Run Simulation</button>
-      </section>
+          <div class="wizard-nav">
+            <button id="prevBtn" type="button" class="secondary">Previous</button>
+            <button id="nextBtn" type="button">Next</button>
+            <button id="simulateBtn" type="button" class="run-btn">Run Simulation</button>
+          </div>
+        </section>
 
-      <section class="panel output">
-        <h2>2) Results</h2>
+        <section id="resultsPanel" class="output hidden">
+          <h2>Results</h2>
 
-        <div class="metrics">
-          <article class="metric-card">
-            <p class="metric-label">Hire probability</p>
-            <p id="hireProbability" class="metric-value">--</p>
-          </article>
+          <div class="metrics">
+            <article class="metric-card">
+              <p class="metric-label">Hire probability</p>
+              <p id="hireProbability" class="metric-value">--</p>
+            </article>
 
-          <article class="metric-card">
-            <p class="metric-label">Estimated salary (monthly)</p>
-            <p id="salaryLevel" class="metric-value">--</p>
-          </article>
+            <article class="metric-card">
+              <p class="metric-label">Estimated salary (monthly)</p>
+              <p id="salaryLevel" class="metric-value">--</p>
+            </article>
 
-          <article class="metric-card">
-            <p class="metric-label">Time to employment</p>
-            <p id="employmentTime" class="metric-value">--</p>
-          </article>
-        </div>
+            <article class="metric-card">
+              <p class="metric-label">Time to employment</p>
+              <p id="employmentTime" class="metric-value">--</p>
+            </article>
+          </div>
 
-        <div class="insight-block">
-          <h3>Demand logic explanation</h3>
-          <p id="insightText">Run a simulation to see how the market evaluates your choices.</p>
-        </div>
+          <div class="insight-block">
+            <h3>Demand logic explanation</h3>
+            <p id="insightText">Run a simulation to see how the market evaluates your choices.</p>
+          </div>
+        </section>
       </section>
     </main>
 

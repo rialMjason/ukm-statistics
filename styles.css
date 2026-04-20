@@ -18,6 +18,8 @@
 body {
   margin: 0;
   min-height: 100vh;
+  display: grid;
+  place-items: center;
   font-family: "Space Grotesk", sans-serif;
   color: var(--ink);
   background:
@@ -27,18 +29,15 @@ body {
   padding: 24px;
 }
 
-.app-shell {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: grid;
-  gap: 18px;
+.stage {
+  width: min(100%, 760px);
 }
 
-.panel {
+.wizard-card {
   background: var(--card);
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 8px 25px rgba(11, 24, 26, 0.18);
+  border-radius: 22px;
+  padding: 26px;
+  box-shadow: 0 16px 36px rgba(11, 24, 26, 0.24);
   animation: rise 520ms ease both;
 }
 
@@ -67,11 +66,12 @@ p {
   margin-bottom: 0;
 }
 
-.control-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-  margin-top: 14px;
+.wizard {
+  margin-top: 20px;
+  background: #f4f7ef;
+  border: 1px solid #d8e0d5;
+  border-radius: 16px;
+  padding: 18px;
 }
 
 label {
@@ -80,6 +80,29 @@ label {
   gap: 8px;
   font-size: 0.95rem;
   font-weight: 500;
+}
+
+.step-counter {
+  margin: 0;
+  color: var(--warn);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.question-viewport {
+  margin-top: 12px;
+  min-height: 98px;
+}
+
+.question-step {
+  display: none;
+  animation: fadeIn 220ms ease both;
+}
+
+.question-step.active {
+  display: block;
 }
 
 select,
@@ -107,6 +130,33 @@ button {
 button:hover {
   transform: translateY(-1px);
   filter: saturate(1.15);
+}
+
+.wizard-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.wizard-nav button {
+  margin-top: 0;
+}
+
+button.secondary {
+  background: #d8e2dc;
+  color: #1f2929;
+}
+
+button.run-btn {
+  margin-left: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.output {
+  margin-top: 20px;
 }
 
 .metrics {
@@ -154,12 +204,33 @@ button:hover {
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 700px) {
   body {
     padding: 14px;
+    display: block;
   }
 
-  .panel {
+  .wizard-card {
     padding: 16px;
+  }
+
+  .wizard-nav {
+    flex-wrap: wrap;
+  }
+
+  button.run-btn {
+    margin-left: 0;
+    width: 100%;
   }
 }
