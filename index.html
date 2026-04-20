@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skill Gap -> Employment Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bitter:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel intro">
+        <p class="eyebrow">UKM Labour Market Game</p>
+        <h1>Skill Gap -> Employment Simulator</h1>
+        <p>
+          Build your profile with TVET programs, internships, and certifications.
+          Then simulate how changing labour demand affects your hiring probability,
+          salary, and time to employment.
+        </p>
+      </section>
+
+      <section class="panel controls">
+        <h2>1) Choose Your Path</h2>
+        <div class="control-grid">
+          <label>
+            TVET program
+            <select id="courseSelect"></select>
+          </label>
+
+          <label>
+            Internship
+            <select id="internshipSelect"></select>
+          </label>
+
+          <label>
+            Certification
+            <select id="certSelect"></select>
+          </label>
+
+          <label>
+            Labour market scenario
+            <select id="scenarioSelect">
+              <option value="baseline">Baseline growth</option>
+              <option value="green-shift">Green transition boom</option>
+              <option value="automation-wave">Automation wave</option>
+              <option value="global-slowdown">Global slowdown</option>
+            </select>
+          </label>
+
+          <label>
+            Simulation year: <span id="yearLabel">2026</span>
+            <input id="yearRange" type="range" min="2026" max="2032" value="2026" />
+          </label>
+        </div>
+
+        <button id="simulateBtn" type="button">Run Simulation</button>
+      </section>
+
+      <section class="panel output">
+        <h2>2) Results</h2>
+
+        <div class="metrics">
+          <article class="metric-card">
+            <p class="metric-label">Hire probability</p>
+            <p id="hireProbability" class="metric-value">--</p>
+          </article>
+
+          <article class="metric-card">
+            <p class="metric-label">Estimated salary (monthly)</p>
+            <p id="salaryLevel" class="metric-value">--</p>
+          </article>
+
+          <article class="metric-card">
+            <p class="metric-label">Time to employment</p>
+            <p id="employmentTime" class="metric-value">--</p>
+          </article>
+        </div>
+
+        <div class="insight-block">
+          <h3>Demand logic explanation</h3>
+          <p id="insightText">Run a simulation to see how the market evaluates your choices.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
